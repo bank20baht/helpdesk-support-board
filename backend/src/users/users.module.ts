@@ -1,7 +1,10 @@
 import { Module } from '@nestjs/common';
 import { UsersController } from './users.controller';
+import { ObjectionModule } from '@willsoto/nestjs-objection';
+import Users from './users.model';
 
 @Module({
-  controllers: [UsersController]
+  imports: [ObjectionModule.forFeature([Users])],
+  controllers: [UsersController],
 })
 export class UsersModule {}
