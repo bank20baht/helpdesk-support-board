@@ -1,7 +1,21 @@
 import { Model } from 'objection';
-
+import Users from 'src/users/users.model';
 export default class Tickets extends Model {
-  static tableName = 'tickets';
+  static get tableName() {
+    return 'tickets';
+  }
+  static get relationMappings() {
+    return {
+      user: {
+        relation: Model.HasOneRelation,
+        modelClass: Users,
+        join: {
+          from: 'tickets.userId',
+          to: 'users.id',
+        },
+      },
+    };
+  }
 
   id: number;
   title: string;

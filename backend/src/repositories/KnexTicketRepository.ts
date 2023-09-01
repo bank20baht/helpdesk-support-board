@@ -6,7 +6,7 @@ export default class KnexTicketRepository implements TicketRepositoryInterface {
   constructor(@Inject(Tickets) private readonly ticketModel: typeof Tickets) {}
 
   async all(): Promise<Tickets[]> {
-    return this.ticketModel.query();
+    return this.ticketModel.query().withGraphFetched('user');
   }
 
   async find(id: string): Promise<Tickets> {

@@ -1,7 +1,9 @@
 import { Model } from 'objection';
 
 export default class Users extends Model {
-  static tableName = 'users';
+  static get tableName() {
+    return 'users';
+  }
 
   id: number;
   name: string;
