@@ -25,4 +25,8 @@ export default class Tickets extends Model {
   userId: number;
   created_at: Date;
   updated_at: Date;
+  user: {
+    id: number;
+    name: string;
+  };
 }
