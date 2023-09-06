@@ -1,4 +1,4 @@
-import { Controller, Get, Inject, Param } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
 import UserRepositoryInterface from 'src/repositories/UserRepositoryInterface';
 import Users from './users.model';
 @Controller('users')
@@ -16,5 +16,10 @@ export class UsersController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.userRepository.find(id);
+  }
+
+  @Post()
+  create(@Body() createUserDto: Users) {
+    return this.userRepository.create(createUserDto);
   }
 }

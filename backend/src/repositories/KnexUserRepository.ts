@@ -16,4 +16,8 @@ export default class KnexUserRepository implements UserRepositoryInterface {
       .withGraphFetched('tickets')
       .first();
   }
+
+  async create(data: object): Promise<Users> {
+    return await this.userModel.query().insert(data);
+  }
 }
