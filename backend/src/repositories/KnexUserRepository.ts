@@ -8,4 +8,12 @@ export default class KnexUserRepository implements UserRepositoryInterface {
   async all(): Promise<Users[]> {
     return this.userModel.query().withGraphFetched('tickets');
   }
+
+  async find(id: string): Promise<Users> {
+    return this.userModel
+      .query()
+      .where('id', id)
+      .withGraphFetched('tickets')
+      .first();
+  }
 }
