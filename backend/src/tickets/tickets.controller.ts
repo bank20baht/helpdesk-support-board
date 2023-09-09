@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  Request,
   UseGuards,
 } from '@nestjs/common';
 import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
@@ -22,7 +23,10 @@ export class TicketsController {
 
   @UseGuards(JwtGuard)
   @Get()
-  async findAll() {
+  async findAll(@Request() req) {
+    // Import Request from '@nestjs/common'
+    const user = req.user; // This will contain the user information from JwtStrategy
+    console.log(user);
     return this.ticketRepository.all();
   }
   @Get(':id')
