@@ -7,7 +7,9 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
 import TicketRepositoryInterface from 'src/repositories/TicketRepositoryInterface';
 import Tickets from './tickets.model';
 
@@ -18,6 +20,7 @@ export class TicketsController {
     private readonly ticketRepository: TicketRepositoryInterface,
   ) {}
 
+  @UseGuards(JwtGuard)
   @Get()
   async findAll() {
     return this.ticketRepository.all();
