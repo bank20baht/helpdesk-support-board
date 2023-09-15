@@ -3,13 +3,16 @@ import {
   Controller,
   Delete,
   Get,
+  HttpStatus,
   Inject,
   Param,
   Patch,
   Post,
-  Request,
+  Req,
+  Res,
   UseGuards,
 } from '@nestjs/common';
+import { Request, Response } from 'express';
 import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
 import TicketRepositoryInterface from 'src/repositories/TicketRepositoryInterface';
 import Tickets from './tickets.model';
@@ -21,36 +24,95 @@ export class TicketsController {
     private readonly ticketRepository: TicketRepositoryInterface,
   ) {}
 
-  @UseGuards(JwtGuard)
+  //@UseGuards(JwtGuard)
   @Get()
-  async findAll(@Request() req) {
-    const user = req.user;
-    console.log('findall');
-    console.log(user);
-    return this.ticketRepository.all();
+  async findAll(@Req() req: Request, @Res() res: Response) {
+    try {
+      const tickets = await this.ticketRepository.all();
+      if (tickets.length > 0) {
+        res.status(HttpStatus.OK).send(tickets);
+      } else {
+        res
+          .status(HttpStatus.NOT_FOUND)
+          .send({ message: 'No tickets in database' });
+      }
+    } catch (error) {
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('Server Error');
+    }
   }
 
-  @UseGuards(JwtGuard)
+  //@UseGuards(JwtGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.ticketRepository.find(id);
+  async findOne(@Req() req: Request, @Res() res: Response) {
+    try {
+      const ticket = await this.ticketRepository.find(req.params.id);
+      if (ticket) {
+        res.status(HttpStatus.OK).send(ticket);
+      } else {
+        res
+          .status(HttpStatus.NOT_FOUND)
+          .send({ message: 'No tickets in database' });
+      }
+    } catch (error) {
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('Server Error');
+    }
   }
 
-  @UseGuards(JwtGuard)
+  //@UseGuards(JwtGuard)
   @Post()
-  create(@Body() createPostDto: Tickets) {
-    return this.ticketRepository.create(createPostDto);
+  async create(@Body() createPostDto: Tickets, @Res() res: Response) {
+    try {
+      await this.ticketRepository.create(createPostDto);
+      res.status(HttpStatus.CREATED).send({
+        message: 'ticket is created',
+      });
+    } catch (error) {
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('Server Error');
+    }
   }
 
-  @UseGuards(JwtGuard)
+  //@UseGuards(JwtGuard)
   @Patch(':id')
-  updated(@Param('id') id: string, @Body() updatePostDto: Tickets) {
-    return this.ticketRepository.edit(id, updatePostDto);
+  async updated(
+    @Param('id') id: string,
+    @Body() updatePostDto: Tickets,
+    @Res() res: Response,
+  ) {
+    try {
+      const updateTicketCount = await this.ticketRepository.edit(
+        id,
+        updatePostDto,
+      );
+      if (updateTicketCount === 0) {
+        res
+          .status(HttpStatus.NOT_FOUND)
+          .send({ message: 'No tickets in database' });
+      } else {
+        res.status(HttpStatus.OK).send({
+          message: 'ticket ' + id + ' is updated',
+        });
+      }
+    } catch (error) {
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('Server Error');
+    }
   }
 
-  @UseGuards(JwtGuard)
+  //@UseGuards(JwtGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.ticketRepository.delete(id);
+  async remove(@Param('id') id: string, @Res() res: Response) {
+    try {
+      const deleteTicketCount = await this.ticketRepository.delete(id);
+      if (deleteTicketCount === 0) {
+        res
+          .status(HttpStatus.NOT_FOUND)
+          .send({ message: 'No tickets in database' });
+      } else {
+        res
+          .status(HttpStatus.OK)
+          .send({ message: 'ticket id ' + id + ' deleted successfully' });
+      }
+    } catch (error) {
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('Server Error');
+    }
   }
 }
