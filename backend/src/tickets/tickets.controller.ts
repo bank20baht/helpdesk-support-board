@@ -24,7 +24,7 @@ export class TicketsController {
     private readonly ticketRepository: TicketRepositoryInterface,
   ) {}
 
-  //@UseGuards(JwtGuard)
+  @UseGuards(JwtGuard)
   @Get()
   async findAll(@Req() req: Request, @Res() res: Response) {
     try {
@@ -41,7 +41,7 @@ export class TicketsController {
     }
   }
 
-  //@UseGuards(JwtGuard)
+  @UseGuards(JwtGuard)
   @Get(':id')
   async findOne(@Req() req: Request, @Res() res: Response) {
     try {
@@ -58,7 +58,7 @@ export class TicketsController {
     }
   }
 
-  //@UseGuards(JwtGuard)
+  @UseGuards(JwtGuard)
   @Post()
   async create(@Body() createPostDto: Tickets, @Res() res: Response) {
     try {
@@ -71,7 +71,7 @@ export class TicketsController {
     }
   }
 
-  //@UseGuards(JwtGuard)
+  @UseGuards(JwtGuard)
   @Patch(':id')
   async updated(
     @Param('id') id: string,
@@ -97,7 +97,7 @@ export class TicketsController {
     }
   }
 
-  //@UseGuards(JwtGuard)
+  @UseGuards(JwtGuard)
   @Delete(':id')
   async remove(@Param('id') id: string, @Res() res: Response) {
     try {
