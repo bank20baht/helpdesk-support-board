@@ -9,9 +9,7 @@ export class AuthService {
     @Inject('UserRepository')
     private readonly userService: UserRepositoryInterface,
     private readonly jwtService: JwtService,
-  ) {
-    console.log('AuthService constructor called');
-  }
+  ) {}
 
   async validateUser(username: string, password: string) {
     const user = await this.userService.findOneWithUserName(username);
@@ -24,29 +22,25 @@ export class AuthService {
 
   async login(user: Users) {
     const payload = {
-      username: user.email,
-      sub: {
-        name: user.name,
-      },
+      role: user.role,
+      id: user.id,
     };
 
     return {
       ...user,
-      accessToken: this.jwtService.sign(payload),
+      accessToken: this.jwtService.sign(payload, { expiresIn: '10m' }),
       refreshToken: this.jwtService.sign(payload, { expiresIn: '7d' }),
     };
   }
 
   async refreshToken(user: Users) {
     const payload = {
-      username: user.email,
-      sub: {
-        name: user.name,
-      },
+      role: user.role,
+      id: user.id,
     };
 
     return {
-      accessToken: this.jwtService.sign(payload),
+      accessToken: this.jwtService.sign(payload, { expiresIn: '10m' }),
     };
   }
 }
