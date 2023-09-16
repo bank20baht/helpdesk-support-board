@@ -27,7 +27,7 @@ export class AuthService {
     };
 
     return {
-      ...user,
+      id: user.id,
       accessToken: this.jwtService.sign(payload, { expiresIn: '10m' }),
       refreshToken: this.jwtService.sign(payload, { expiresIn: '7d' }),
     };
