@@ -1,0 +1,47 @@
+version: '3.9'
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgressql
+    hostname: postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: helpdesk-board-db
+    volumes:
+      - postgres2-data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmimdb
+    depends_on:
+      - postgres
+    ports:
+      - '5555:80'
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: admin
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    restart: unless-stopped
+
+  server:
+    stdin_open: true
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: production
+    container_name: server
+    depends_on:
+      - postgres
+    ports:
+      - 5000:5000
+    restart: always
+
+volumes:
+  postgres2-data: # Define the 'postgres2-data' volume here
+  pgadmin-data: # Define the 'pgadmin-data' volume here
