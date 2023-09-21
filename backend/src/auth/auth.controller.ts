@@ -56,11 +56,8 @@ export class AuthController {
 
   @UseGuards(RefreshJwtGuard)
   @Post('refresh')
-  async refrshToken(@Req() req, @Res() res: Response) {
-    try {
-      return await this.authService.refreshToken(req.user);
-    } catch (error) {
-      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('Server Error');
-    }
+  async refrshToken(@Req() req) {
+    console.log('refreshtoken req');
+    return this.authService.refreshToken(req.user);
   }
 }

@@ -34,13 +34,17 @@ export class AuthService {
   }
 
   async refreshToken(user: Users) {
+    console.log('refreshtoken service');
+    console.log(user);
     const payload = {
       role: user.role,
       id: user.id,
     };
 
-    return {
-      accessToken: this.jwtService.sign(payload, { expiresIn: '10m' }),
+    const token = {
+      accessToken: this.jwtService.sign(user, { expiresIn: '10m' }),
     };
+    console.log(token);
+    return token;
   }
 }

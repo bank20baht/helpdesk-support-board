@@ -14,6 +14,8 @@ export class RefreshJwtStrategy extends PassportStrategy(
   }
 
   async validate(payload: any) {
+    console.log('validate refreshtoken-stragy');
+    console.log(payload);
     return { id: payload.id, role: payload.role };
   }
 }

@@ -28,6 +28,8 @@ export class TicketsController {
   @Get()
   async findAll(@Req() req: Request, @Res() res: Response) {
     try {
+      console.log('method findall acesss payload');
+      console.log(req.user);
       const tickets = await this.ticketRepository.all();
       if (tickets.length > 0) {
         res.status(HttpStatus.OK).send(tickets);
@@ -60,7 +62,11 @@ export class TicketsController {
 
   @UseGuards(JwtGuard)
   @Post()
-  async create(@Body() createPostDto: Tickets, @Res() res: Response) {
+  async create(
+    @Req() req: Request,
+    @Body() createPostDto: Tickets,
+    @Res() res: Response,
+  ) {
     try {
       await this.ticketRepository.create(createPostDto);
       res.status(HttpStatus.CREATED).send({
