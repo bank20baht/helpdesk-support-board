@@ -8,10 +8,15 @@ import {
   Post,
   Req,
   Res,
+  UseGuards,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import UserRepositoryInterface from 'src/repositories/UserRepositoryInterface';
 import Users from './users.model';
+import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
+
+@ApiTags('users')
 @Controller('users')
 export class UsersController {
   constructor(
@@ -19,6 +24,7 @@ export class UsersController {
     private readonly userRepository: UserRepositoryInterface,
   ) {}
 
+  @UseGuards(JwtGuard)
   @Get()
   async findAll(@Req() req: Request, @Res() res: Response) {
     try {
@@ -35,6 +41,7 @@ export class UsersController {
     }
   }
 
+  @UseGuards(JwtGuard)
   @Get(':id')
   async findOne(@Param('id') id: string, @Res() res: Response) {
     try {
@@ -46,18 +53,6 @@ export class UsersController {
           .status(HttpStatus.NOT_FOUND)
           .send({ message: 'No this user in database' });
       }
-    } catch (error) {
-      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('Server Error');
-    }
-  }
-
-  @Post()
-  async create(@Body() createUserDto: Users, @Res() res: Response) {
-    try {
-      await this.userRepository.create(createUserDto);
-      res.status(HttpStatus.CREATED).send({
-        message: 'user is created',
-      });
     } catch (error) {
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('Server Error');
     }

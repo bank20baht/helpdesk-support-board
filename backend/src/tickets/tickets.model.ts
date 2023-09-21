@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Model } from 'objection';
 import Users from 'src/users/users.model';
 export default class Tickets extends Model {
@@ -18,8 +19,11 @@ export default class Tickets extends Model {
   }
 
   id: number;
+  @ApiProperty()
   title: string;
+  @ApiProperty()
   detail: string;
+  @ApiProperty()
   room: string;
   status: string;
   userId: number;

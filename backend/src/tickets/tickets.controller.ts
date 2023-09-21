@@ -12,11 +12,13 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import { JwtGuard } from 'src/auth/guards/jwt-auth.guard';
 import TicketRepositoryInterface from 'src/repositories/TicketRepositoryInterface';
 import Tickets from './tickets.model';
 
+@ApiTags('tickets')
 @Controller('tickets')
 export class TicketsController {
   constructor(
