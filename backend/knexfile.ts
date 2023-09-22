@@ -6,7 +6,7 @@ const config: { [key: string]: Knex.Config } = {
   development: {
     client: 'pg',
     connection: {
-      host: '127.0.0.1',
+      host: '172.30.0.1',
       port: 5432,
       user: 'postgres',
       password: 'admin',

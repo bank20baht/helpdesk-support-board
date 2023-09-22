@@ -5,6 +5,7 @@ export default class Tickets extends Model {
   static get tableName() {
     return 'tickets';
   }
+
   static get relationMappings() {
     return {
       user: {
@@ -33,4 +34,11 @@ export default class Tickets extends Model {
     id: number;
     name: string;
   };
+
+  async $beforeUpdate(opt: any, queryContext: any) {
+    await super.$beforeUpdate(opt, queryContext);
+
+    const currentDate = new Date();
+    this.updated_at = currentDate;
+  }
 }

@@ -12,7 +12,7 @@ import { AuthModule } from './auth/auth.module';
         client: 'pg',
         useNullAsDefault: true,
         connection: {
-          host: '127.0.0.1',
+          host: '172.30.0.1',
           port: 5432,
           user: 'postgres',
           password: 'admin',

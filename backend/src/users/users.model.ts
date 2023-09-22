@@ -1,4 +1,4 @@
-import { Model } from 'objection';
+import { Model, ModelOptions, QueryContext } from 'objection';
 import * as bcrypt from 'bcrypt';
 import Tickets from 'src/tickets/tickets.model';
 import { ApiProperty } from '@nestjs/swagger';
@@ -22,7 +22,6 @@ export default class Users extends Model {
     };
   }
 
-  @ApiProperty()
   id: number;
   @ApiProperty()
   name: string;
